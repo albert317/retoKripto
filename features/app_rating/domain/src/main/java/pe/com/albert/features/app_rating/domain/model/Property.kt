@@ -1,7 +1,7 @@
 package pe.com.albert.features.app_rating.domain.model
 
 data class Property(
-    val id: Int,
+    val id: String,
     val idApplication: Int,
     val cpuResources: Float,
     val memoryResources: Float,

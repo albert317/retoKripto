@@ -47,23 +47,34 @@ android {
 }
 
 dependencies {
-    //AndroidX
+    implementation(project(":core:firebase"))
+    implementation(project(":features:app_rating:domain"))
+    implementation(project(":features:app_rating:infrastructure"))
+
+    implementation(libs.daggerHilt)
+    kapt(libs.daggerHiltCompiler)
+    implementation(libs.daggerHiltNavigationCompose)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.coroutines.android)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.navigation)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.paygilant.android.sdk)
-
-    //hilt
-    implementation(libs.daggerHilt)
-    kapt(libs.daggerHiltCompiler)
+    implementation(libs.coilCompose)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation("androidx.compose.animation:animation:1.6.7")
+    implementation(libs.androidx.compose.navigation)
+    implementation("androidx.compose.foundation:foundation-android:1.6.7")
 
 
     //test
