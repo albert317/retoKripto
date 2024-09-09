@@ -8,5 +8,5 @@ import pe.com.albert.features.app_rating.infrastructure.entity.PropertyEntity
 interface AppRatingDataSource {
     fun getApplications(): Flow<Result<List<ApplicationEntity>>>
     fun saveRating(propertyEntity: PropertyEntity): Result<Boolean>
-    suspend fun getAppStatistic(idApplication: String): Result<ApplicationEntity>
+    suspend fun getAppStatistic(idApplication: String): Result<List<PropertyEntity>>
 }

@@ -8,5 +8,5 @@ import pe.com.albert.features.app_rating.domain.util.Result
 interface AppRatingRepository {
     fun getApplications(): Flow<Result<List<Application>>>
     fun saveRating(propertyEntity: Property): Result<Boolean>
-    suspend fun getAppStatistic(idApplication: String): Result<Application>
+    suspend fun getAppStatistic(idApplication: String): Result<List<Property>>
 }

@@ -4,13 +4,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import pe.com.albert.features.app_rating.domain.util.Failure
 import pe.com.albert.features.app_rating.domain.util.Result
 import pe.com.albert.features.app_rating.infrastructure.datasource.AppRatingDataSource
 import pe.com.albert.features.app_rating.infrastructure.entity.ApplicationEntity
-import javax.inject.Inject
-import kotlinx.coroutines.tasks.await
 import pe.com.albert.features.app_rating.infrastructure.entity.PropertyEntity
+import javax.inject.Inject
 
 class AppRatingDataSourceImpl @Inject constructor(private val fireStore: FirebaseFirestore) :
     AppRatingDataSource {
@@ -39,22 +39,25 @@ class AppRatingDataSourceImpl @Inject constructor(private val fireStore: Firebas
 
     override fun saveRating(propertyEntity: PropertyEntity): Result<Boolean> {
         return try {
-            fireStore.collection("Property").document(propertyEntity.id).set(propertyEntity)
+            fireStore.collection("Property").add(propertyEntity)
             Result.Success(true)
         } catch (e: Exception) {
             Result.Error(Failure.CustomError(e.message ?: "Unknown Error"))
         }
     }
 
-    override suspend fun getAppStatistic(idApplication: String): Result<ApplicationEntity> {
+    override suspend fun getAppStatistic(idApplication: String): Result<List<PropertyEntity>> {
         return try {
-            val document = fireStore.collection("Application").document(idApplication).get().await()
-            val application = document.toObject(ApplicationEntity::class.java)
-            if (application != null) {
-                Result.Success(application)
-            } else {
-                Result.Error(Failure.CustomError("not found"))
+            val document = fireStore.collection("Property")
+                .whereEqualTo("idApplication", idApplication)
+                .get()
+                .await()
+
+            val properties = document.documents.mapNotNull {
+                val objetc = it.toObject(PropertyEntity::class.java)?.copy(id = it.id)
+                objetc
             }
+            Result.Success(properties)
         } catch (e: Exception) {
             Result.Error(Failure.CustomError(e.message ?: "Unknown Error"))
         }

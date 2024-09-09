@@ -19,7 +19,12 @@ class ApplicationListViewModel @Inject constructor(
     override suspend fun handleIntent(intent: ApplicationListUiIntent) {
         when (intent) {
             is ApplicationListUiIntent.LoadData -> loadApplications()
-            is ApplicationListUiIntent.GoToForm -> ApplicationListNavigation.GoToForm(intent.idApplication)
+            is ApplicationListUiIntent.GoToForm -> goNavigation(
+                ApplicationListNavigation.GoToForm(
+                    intent.idApplication,
+                    intent.nameApplication
+                )
+            )
         }
     }
 

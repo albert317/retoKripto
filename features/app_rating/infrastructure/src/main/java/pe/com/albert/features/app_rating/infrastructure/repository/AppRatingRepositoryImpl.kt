@@ -26,9 +26,9 @@ class AppRatingRepositoryImpl @Inject constructor(private val appRatingDataSourc
         return appRatingDataSource.saveRating(propertyEntity.toEntity())
     }
 
-    override suspend fun getAppStatistic(idApplication: String): Result<Application> {
+    override suspend fun getAppStatistic(idApplication: String): Result<List<Property>> {
         return when (val result = appRatingDataSource.getAppStatistic(idApplication)) {
-            is Result.Success -> Result.Success(result.data.toDomain())
+            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
             is Result.Error -> Result.Error(result.failure)
         }
     }
