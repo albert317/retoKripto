@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -52,6 +54,7 @@ android {
 
 dependencies {
 
+    implementation(project(":features:app_rating:presentation"))
     //AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -70,6 +73,10 @@ dependencies {
     implementation(libs.daggerHilt)
     kapt(libs.daggerHiltCompiler)
 
+
+    //Firebase
+    implementation(platform(libs.firebaseBom))
+    implementation(libs.firebaseFirestore)
 
     //test
     testImplementation(libs.junit)
