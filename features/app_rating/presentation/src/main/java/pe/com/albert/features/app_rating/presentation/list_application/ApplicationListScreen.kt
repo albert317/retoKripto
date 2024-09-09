@@ -3,16 +3,14 @@ package pe.com.albert.features.app_rating.presentation.list_application
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,7 +31,7 @@ import pe.com.albert.features.app_rating.presentation.R
 import pe.com.albert.features.app_rating.presentation.util.MyTopAppBar
 
 @Composable
-fun ApplicationListScreen(goToForm: (String,String) -> Unit = { _,_ -> Unit }) {
+fun ApplicationListScreen(goToForm: (String, String) -> Unit = { _, _ -> Unit }) {
     val viewModel: ApplicationListViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
@@ -41,7 +39,7 @@ fun ApplicationListScreen(goToForm: (String,String) -> Unit = { _,_ -> Unit }) {
     }
 
     ListScreenContent(applications = state.applications, onClick = {
-        viewModel.setIntent(ApplicationListUiIntent.GoToForm(it.id,it.name))
+        viewModel.setIntent(ApplicationListUiIntent.GoToForm(it.id, it.name))
     })
 
     LaunchedEffect(viewModel.navigation) {
@@ -61,11 +59,11 @@ fun ListScreenContent(
 
     Scaffold(
         topBar = {
-            MyTopAppBar("Applicaciones"){
+            MyTopAppBar("Applicaciones") {
                 act.finish()
             }
         },
-        content = {innerPadding ->
+        content = { innerPadding ->
             LazyColumn(
                 modifier = Modifier.padding(innerPadding)
             ) {
@@ -90,7 +88,11 @@ fun itemApplication(application: Application, onClick: (Application) -> Unit) {
                 painter = painterResource(id = R.drawable.baseline_hexagon_24),
                 contentDescription = "App Icon"
             )
-            Text(text = application.name, style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.padding(8.dp))
+            Column {
+                Text(text = application.name, style = MaterialTheme.typography.titleMedium)
+                Text(text = application.description, style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ class AppRatingDataSourceImpl @Inject constructor(private val fireStore: Firebas
                             document.toObject(ApplicationEntity::class.java)?.copy(id = document.id)
                         }
                         if (applications != null) {
-                            trySend(Result.Success(applications))
+                            trySend(Result.Success(applications.sortedBy { it.dateCreation }))
                         } else {
                             trySend(Result.Error(Failure.CustomError("not found")))
                         }
